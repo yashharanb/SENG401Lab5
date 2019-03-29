@@ -18,8 +18,18 @@ class BookController extends Controller
       return new BookResource($book);
     }
 
+    public function image(Book $book){
+      return '<img src='.$book->image.'>';
+    }
+
+    public function isbn($isbn){
+      $book = Book::where('ISBN', $isbn)->first();
+      return new BookResource($book);
+    }
+
     public function __construct()
     {
-      $this->middleware('auth:api')->except(['index', 'show']);
+      $this->middleware('auth:api')->except(['index', 'show', 'image', 'isbn']);
     }
+
 }

@@ -21,8 +21,10 @@ Route::post('register', 'AuthController@register');
 
 Route::post('login', 'AuthController@login');
 
+Route::get('books/{book}/image', 'BookController@image');
+
+Route::get('books/{isbn}', 'BookController@isbn');
+
 Route::apiResource('books', 'BookController');
 
 Route::apiResource('authors', 'AuthorController');
-
-Route::apiResource('images', 'ImageController');
