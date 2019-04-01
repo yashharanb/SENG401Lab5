@@ -62,38 +62,90 @@
                 margin-bottom: 30px;
             }
         </style>
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
+      
+    <script>
+        function getBooks() {
+            $.ajax({
+                type:'GET',
+                url:'/api/books',
+                data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+                    $("#display").html(JSON.stringify(data));
+                }
+            });
+        }
+
+        function getAuthors() {
+            $.ajax({
+                type:'GET',
+                url:'/api/authors',
+                data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+                    $("#display").html(JSON.stringify(data));
+                }
+            });
+        }
+
+        function getImage() {
+            var id = $('#bookID').val();
+
+            $.ajax({
+                type:'GET',
+                url:'/api/books/' + id + '/image',
+                data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+                    $("#display").html(data);
+                }
+            });
+        }
+
+        function getISBN() {
+            var isbn = $('#isbn').val();
+
+            $.ajax({
+                type:'GET',
+                url:'/api/books/' + isbn,
+                data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+                    $("#display").html(JSON.stringify(data));
+                }
+            });
+        }
+
+    </script>
+
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
+            
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Library
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <input type='button' value='Display All Books' onclick='getBooks()'/><br>
+
+                    <input type='button' value='Display All Authors' onclick='getAuthors()'/><br>
+
+                    <input type='text' id='bookID' placeholder='Book ID'/>
+                    <input type='button' value='Display Image' onclick='getImage()'/><br>
+
+                    <input type='text' id='isbn' placeholder='ISBN Number'/>
+                    <input type='button' value='Display Information' onclick='getISBN()'/><br>
+                    
                 </div>
+
+                
+
             </div>
         </div>
+        <div id="display">
+
+        </div>
+        <br><br>
     </body>
 </html>
